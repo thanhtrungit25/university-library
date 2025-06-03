@@ -1,5 +1,9 @@
 "use client";
 
+import Link from "next/link";
+
+import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
+import { ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useForm,
@@ -9,21 +13,18 @@ import {
   FieldValues,
   Path,
 } from "react-hook-form";
-import { z, ZodSchema, ZodType } from "zod";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
+
 import ImageUpload from "./ImageUpload";
 
 interface Props<T extends FieldValues> {
@@ -46,7 +47,6 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  // 2. Define a submit handler.
   const handleSubmit: SubmitHandler<T> = async (data) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -77,7 +77,9 @@ const AuthForm = <T extends FieldValues>({
                   </FormLabel>
                   <FormControl>
                     {field.name === "universityCard" ? (
-                      <ImageUpload />
+                      <ImageUpload
+                        onFileChange={field.onChange}
+                      />
                     ) : (
                       <Input
                         required
