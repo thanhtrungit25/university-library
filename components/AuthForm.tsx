@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import { ZodType } from "zod";
@@ -40,6 +42,7 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmit,
 }: Props<T>) => {
+  const router = useRouter();
   const isSignIn = type === "SIGN_IN";
 
   const form: UseFormReturn<T> = useForm({
@@ -48,9 +51,24 @@ const AuthForm = <T extends FieldValues>({
   });
 
   const handleSubmit: SubmitHandler<T> = async (data) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(data);
+    const result = await onSubmit(data);
+
+    if (result.success) {
+      toast({
+        title: "Success",
+        description: isSignIn
+          ? "You have successfully signed in."
+          : "You have successfully signed up.",
+      });
+
+      router.push("/");
+    } else {
+      toast({
+        title: `Error ${isSignIn ? "signing in" : "signing up"}`,
+        description: result.error ?? "An error occured.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -77,9 +95,7 @@ const AuthForm = <T extends FieldValues>({
                   </FormLabel>
                   <FormControl>
                     {field.name === "universityCard" ? (
-                      <ImageUpload
-                        onFileChange={field.onChange}
-                      />
+                      <ImageUpload onFileChange={field.onChange} />
                     ) : (
                       <Input
                         required

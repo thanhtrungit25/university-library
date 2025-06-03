@@ -3,10 +3,12 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { cn, getInitials } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { Session } from "next-auth";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-const Header = () => {
+const Header = ({ session }: { session: Session }) => {
   const pathname = usePathname();
 
   return (
@@ -25,6 +27,15 @@ const Header = () => {
             )}
           >
             Library
+          </Link>
+        </li>
+        <li>
+          <Link href="/my-profile">
+            <Avatar>
+              <AvatarFallback className="bg-amber-100">
+                {getInitials(session.user?.name || "IN")}
+              </AvatarFallback>
+            </Avatar>
           </Link>
         </li>
       </ul>
