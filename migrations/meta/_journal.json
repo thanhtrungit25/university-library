@@ -15,6 +15,20 @@
       "when": 1749019265281,
       "tag": "0001_productive_power_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749028047192,
+      "tag": "0002_breezy_spacker_dave",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1749028163750,
+      "tag": "0003_chemical_shape",
+      "breakpoints": true
     }
   ]
 }
